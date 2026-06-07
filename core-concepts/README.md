@@ -191,6 +191,43 @@ kubectl delete po --all: xoa pod cua current namespace (-n neu muon namespace cu
 
 ```
 
+###### Pod Lifecycle
+
+Pod phase:
+- Pending: Trạng thái ban đầu khi pod object được tạo. Pending cho tới khi pod được scheduled tới một node, và ít nhất một container trong pod start
+- Running: Khi có ít nhất một container running
+- Succeeded: Các containers complete 
+- Failed: Một trong các contaienrs không complete
+- Unknown: Kubelet k report pod status cho API server
+
+```bash
+# Get phase of pods
+k get pods -o yaml | grep phase
+```
+Pod conditions: Mô tả trạng thái hiện tại của một pods tại các giai đoạn khác nhau.
+- PodScheduled: chỉ ra liệu pod đã được scheduled lên node chưa
+- Initialized: chỉ ra các init containers đã hoàn thành hết chưa
+- ContainersReady: khi tất cả container ready (PID 1 run) 
+- Ready: các readiness probes và containers đều sẵn sàng.
+
+```bash
+# Get pod conditions
+k get pods -o json | jq .status.conditions
+```
+
+Container states:
+- Waiting: container đang đợi để stat, reason và message fields chỉ ra lí do 
+- Running: Process đã chạy.
+- Terminated: Process trong container terminated, exitCode chỉ ra kết quả exit code của main process
+- Unknown: State of container không thể show ra.
+  
+``` bash 
+# Get pod's containers state
+k get pods -o json | jq .status.containerStatuses
+
+# Get pod's init containers state
+k get pods -o json | jq .status.initContainerStatuses
+```
 </details>
 
 <details>
