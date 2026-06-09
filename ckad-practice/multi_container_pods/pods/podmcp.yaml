@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: twocp
+  name: twocp
+spec:
+  containers:
+  - args:
+    - sh
+    - -c
+    - echo hello; sleep 3600
+    image: busybox
+    name: first
+  - args:
+    - sh
+    - -c
+    - echo hello; sleep 3600
+    image: busybox
+    name: second
+    volumeMounts:
+      - mountPath: /usr/share/nginx/html
+        name: html
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

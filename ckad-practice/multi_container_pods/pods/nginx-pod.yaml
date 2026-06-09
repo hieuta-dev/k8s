@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  initContainers:
+  - image: busybox
+    name: init-html
+    command: ['sh', '-c', 'echo "Hello" > /work-dir/index.html']
+    volumeMounts:
+      - mountPath: /work-dir
+        name: html
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: html
+    ports:
+    - containerPort: 80
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes:
+    - name: html
+      emptyDir: {}
+status: {}
