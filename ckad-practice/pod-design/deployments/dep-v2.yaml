@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dep-v2
+  name: dep-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-v2
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: dep-v2
+        tier: frontend
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
